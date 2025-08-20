@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Luxe Bride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'peach': '#F4A261',
+                        'soft-peach': '#F8D7B3',
+                        'beige': '#F5F1EB',
+                        'warm-gray': '#6B7280',
+                        'muted-gold': '#CBA590',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        .popular-badge {
+            background: linear-gradient(135deg, #CBA590, #F4A261);
+        }
+        
+        /* Scroll Animation Styles */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+        
+        .hero-text {
+            opacity: 0;
+            animation: heroFadeIn 1.5s ease-out 0.5s forwards;
+        }
+        
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content.active {
+            max-height: 500px;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        /* Hamburger Animation Styles */
+        .hamburger-icon {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger-line {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #374151;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+            position: relative;
+        }
+        
+        .hamburger-line:nth-child(1) {
+            transform-origin: top left;
+        }
+        
+        .hamburger-line:nth-child(3) {
+            transform-origin: bottom left;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(0px, 0px);
+            width: 120%;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(0px, 0px);
+            width: 120%;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Header / Navigation -->
+    <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-22 h-12  rounded-lg overflow-hidden flex items-center justify-center">
+                    <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755599250/Group_38_yfjar2.svg" alt="Logo" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-700 hover:text-[#CBA590] transition-colors">Home</a>
+                <a href="#packages" class="text-[#CBA590] font-medium">Services</a>
+                <a href="#" class="text-gray-700 hover:text-[#CBA590] transition-colors">Gallery</a>
+                <a href="#" class="text-gray-700 hover:text-[#CBA590] transition-colors">Contact</a>
+                <a href="#CTA" target="_blank" class="border-2 bg-black text-white px-6 py-2 hover:bg-[#CBA590] transition-colors inline-block text-center">
+                    BOOK NOW
+                </a>
+
+            </div>
+            
+            <button id="hamburgerBtn" class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                <div class="hamburger-icon">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="fixed top-0 left-0 w-full h-screen bg-white z-40 opacity-0 invisible transition-all duration-700 ease-out md:hidden">
+            <!-- Close button at the very top -->
+            <button class="absolute top-6 right-6 text-gray-700 text-2xl z-50 w-10 h-10 flex items-center justify-center" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="pt-24 px-6 py-4 space-y-8">
+                <!-- Logo in mobile menu -->
+                <div class="absolute top-[16px] left-[25px]">
+                    <div class="w-34 h-12  rounded-lg overflow-hidden flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755596642/Group_38_plv0de.svg" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <div class="space-y-6 mt-8">
+                    <a href="#" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.1s;">Home</a>
+                    <a href="#packages" class="block text-[#CBA590] font-medium text-right pr-2 text-2xl py-3 font-inter transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.2s;">Services</a>
+                    <a href="#" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.3s;">Gallery</a>
+                    <a href="#" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.4s;">Contact</a>
+                </div>
+                
+                <div class="pt-8 px-4">
+                    <button class="w-full bg-black text-white px-6 py-4 hover:bg-[#CBA590] transition-all duration-300 text-center text-lg font-inter transform translate-y-4 opacity-0" style="transition-delay: 0s;">
+                        Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-b from-beige to-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto hero-text">
+                <h1 class="font-playfair text-5xl md:text-7xl font-bold mb-6 text-gray-800 leading-tight">
+                    Our Services
+                </h1>
+                <p class="font-inter text-xl md:text-2xl text-warm-gray mb-8 leading-relaxed">
+                    Luxury bridal makeup tailored to perfection
+                </p>
+                <div class="w-24 h-1 bg-muted-gold mx-auto rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Packages Section -->
+    <section id="packages" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-4 fade-in">Bridal Packages</h2>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-1">Choose the perfect package for your special day</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Classic Bride Package -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 card-hover scale-in stagger-1">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-beige rounded-full mx-auto mb-6 flex items-center justify-center floating">
+                            <i class="fas fa-heart text-muted-gold text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Classic Bride</h3>
+                        <p class="font-inter text-warm-gray mb-6 leading-relaxed">
+                        Skin finish UHD or Glass skin makeup · Eye makeup · Ornaments · Dress settings · Hair styles · Hijab settings · Lashes and Lens. 
+                        </p>
+                        <div class="mb-6">
+                            <span class="font-inter text-3xl font-bold text-gray-800">₹9,000</span>
+                            <span class="font-inter text-warm-gray text-sm block">starting from</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Luxe Bride Package (Popular) -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-2 border-muted-gold card-hover scale-in stagger-1 relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                        <span class="popular-badge text-white px-3 py-1 rounded-full text-xs font-inter font-medium whitespace-nowrap">Most Popular</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-muted-gold rounded-full mx-auto mb-6 flex items-center justify-center floating" style="animation-delay: 0ms;">
+                            <i class="fas fa-crown text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Signature Bride</h3>
+                        <p class="font-inter text-warm-gray mb-6 leading-relaxed">
+                        Glass skin or Dewy makeup · Eye makeup · Ornaments · Dress settings · Hair styles or Hijab settings · Saree draping · HQ Lashes and Lens · Hair extension.
+                        </p>
+                        <div class="mb-6">
+                            <span class="font-inter text-3xl font-bold text-gray-800">₹12,000</span>
+                            <span class="font-inter text-warm-gray text-sm block">starting from</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Signature Bride Package -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 card-hover scale-in stagger-1">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-beige rounded-full mx-auto mb-6 flex items-center justify-center floating" style="animation-delay: 0ms;">
+                            <i class="fas fa-gem text-muted-gold text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Luxe Bride</h3>
+                        <p class="font-inter text-warm-gray mb-6 leading-relaxed">
+                            Glass skin or Dewy makeup · Eye makeup · Ornaments · Dress settings · Hair styles or Hijab settings · Saree draping · HQ Lashes and Lens · Hair extension with airbrush makeup, premium products multiple looks.
+                        </p>
+                        <div class="mb-6">
+                            <span class="font-inter text-3xl font-bold text-gray-800">₹20,000</span>
+                            <span class="font-inter text-warm-gray text-sm block">starting from</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Individual Services Section -->
+    <section class="py-20 bg-beige">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-4 fade-in">À La Carte Services</h2>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-1">Individual services to complement your beauty needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-1">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-ring text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Engagement Look</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Perfect makeup for your engagement ceremony</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹6,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-2">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-cocktail text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Party Makeup</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Glamorous look for special occasions</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹5,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-3">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-leaf text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Pre-Bridal Skincare</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Facial treatments for glowing skin</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹3,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-cut text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Hair Styling</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Professional hair styling and updos</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹3,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-5">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-palette text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Trial Session</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Complete makeup trial before your event</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹2,500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user-friends text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Bridal Party</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Makeup for bridesmaids and family</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹4,500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755620444/Frame_50_pgoqdz.svg" alt="Mehindi Icon" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Saree Draping</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">The perfect pleats</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹4,500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover fade-in stagger-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted-gold rounded-full flex items-center justify-center flex-shrink-0">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755621064/Frame_5ss1_cc9be8.svg" alt="Mehindi Icon" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Mehindi</h3>
+                            <p class="font-inter text-warm-gray text-sm mb-3">Mandala, Arabic, Bridal & Indian. Price starts at</p>
+                            <span class="font-inter text-lg font-bold text-gray-800">₹1,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add-ons Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-4 fade-in">Premium Add-ons</h2>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-1">Enhance your experience with luxury extras</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-beige rounded-2xl p-6 fade-in stagger-1">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Eyelash Extensions</h3>
+                                <p class="font-inter text-warm-gray text-sm">Premium individual lashes</p>
+                            </div>
+                            <span class="font-inter text-lg font-bold text-gray-800">+₹2,500</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-beige rounded-2xl p-6 fade-in stagger-2">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Airbrush Upgrade</h3>
+                                <p class="font-inter text-warm-gray text-sm">Flawless airbrush finish</p>
+                            </div>
+                            <span class="font-inter text-lg font-bold text-gray-800">+₹3,000</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-beige rounded-2xl p-6 fade-in stagger-3">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Premium Products</h3>
+                                <p class="font-inter text-warm-gray text-sm">Luxury brand cosmetics</p>
+                            </div>
+                            <span class="font-inter text-lg font-bold text-gray-800">+₹2,000</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-beige rounded-2xl p-6 fade-in stagger-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Travel & Stay</h3>
+                                <p class="font-inter text-warm-gray text-sm">Outside Kerala</p>
+                            </div>
+                            <span class="font-inter text-lg font-bold text-gray-800">+₹5,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-beige">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-4 fade-in">Frequently Asked Questions</h2>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-1">Everything you need to know about our services</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-1">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">Do you offer trial sessions?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">Yes, we highly recommend trial sessions to ensure you're completely happy with your look. Trials are available 1-2 weeks before your event and can be booked separately or included in packages.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-2">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">What are your payment terms?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">We require a 50% advance payment to secure your booking, with the remaining balance due on the day of service. We accept cash, bank transfers, and digital payments.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-2">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">Is advance amount refundable?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">Yes, Advance amout is subjected to refund before 1 week of program. Any cancellations after that is not refundable.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-3">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">How far in advance should I book?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">We recommend booking 2-3 months in advance, especially during wedding season (October-March). However, we do accommodate last-minute bookings based on availability.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-4">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">Do you travel for destination weddings?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">Yes, we offer destination wedding services across India. Travel and accommodation costs are additional and will be discussed during consultation.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg fade-in stagger-5">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-playfair text-lg font-semibold text-gray-800">What are your methodology?</span>
+                        <i class="fas fa-chevron-down text-muted-gold transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="font-inter text-warm-gray">We use premium, professional-grade cosmetics from top brands. All products are hygienic, skin-friendly, and photograph beautifully. Every single buds are replaced and not reused.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-4 fade-in">Trusted Brands We Use</h2>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-1">Premium cosmetics from world-renowned beauty brands</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+                    <!-- Brand Logo 1 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755616847/c51b9dae-29ac-467b-8c0e-73358136a646._CR0_0_600_180_PT0_SX600__-removebg-preview_1_jztrcw.svg" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Logo 2 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755616844/e5f631a566ca1573d9b0d4f13a6faae6-removebg-preview_1_iq60vs.svg" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Logo 3 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755616843/rhgkLIHi3cmFHdAmjeAk7mcEX5oL8jWHYPJgu1o1-removebg-preview_1_aohghx.svg" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Logo 4 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755616843/Mars-removebg-preview_1_f7fsvw.svg" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Logo 5 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755617705/Frame_49_fjcnvf.png" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Logo 6 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755617416/Home-removebg-preview_1_qtwm4z.png" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <!-- Brand Logo 7 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755616843/Garnier__1_-removebg-preview_1_pwaxlt.svg" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <!-- Brand Logo 8 -->
+                    <div class="flex items-center justify-center p-6  rounded-2xl hover:bg-gray-100 transition-colors fade-in stagger-1">
+                        <div class="w-20 h-12  rounded-lg flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755618027/images-removebg-preview_1_isk2fx.png" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 fade-in stagger-6">
+                    <p class="font-inter text-warm-gray text-sm">
+                        We exclusively use professional-grade, cruelty-free cosmetics that photograph beautifully and last all day
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="CTA" class="py-20 bg-gradient-to-r from-muted-gold to-[#CBA590]">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-white mb-6 fade-in">
+                    Secure Your Luxe Bridal Experience
+                </h2>
+                <p class="font-inter text-white text-lg mb-8 opacity-90 fade-in stagger-1">
+                    Ready to look absolutely stunning on your special day? Let's create magic together.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in stagger-2">
+                    <a href="tel:+1234567890" target="_blank" class="bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-100 transition-colors shadow-lg inline-flex items-center justify-center">
+                        <i class="fas fa-phone mr-2"></i>
+                        Call Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="fade-in stagger-1">
+                    <div class="flex items-center mb-6">
+                        <div class="w-22 h-12 b rounded-lg overflow-hidden flex items-center justify-center floating">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754732231/luxe_bride_logo_ojdgme.svg"" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <p class="font-inter text-gray-300 leading-relaxed">
+                        Creating timeless beauty for your most precious moments.
+                    </p>
+                </div>
+                
+                <div class="fade-in stagger-2">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Quick Links</h3>
+                    <div class="space-y-3">
+                        <a href="#" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Home</a>
+                        <a href="#packages" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Services</a>
+                        <a href="#" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Gallery</a>
+                        
+                    </div>
+                </div>
+                
+                <div class="fade-in stagger-3">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Contact Details</h3>
+                    <div class="space-y-3">
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-phone mr-3 text-white"></i>
+                            +91 XXXXXXX
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-envelope mr-3 text-white"></i>
+                            luxebride2025@gmail.com
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-map-marker-alt mr-3 text-white"></i>
+                            Mavelikara, Kerala, India
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center fade-in stagger-4">
+                <p class="font-inter text-gray-300">© 2025 The Bride. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky navbar functionality
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('sticky-nav');
+            } else {
+                navbar.classList.remove('sticky-nav');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+            const menuItems = mobileMenu.querySelectorAll('a, button');
+            
+            if (mobileMenu.classList.contains('opacity-0')) {
+                // Open menu
+                mobileMenu.classList.remove('opacity-0', 'invisible');
+                mobileMenu.classList.add('opacity-100', 'visible');
+                hamburgerIcon.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                
+                // Animate menu items in
+                setTimeout(() => {
+                    menuItems.forEach(item => {
+                        item.classList.remove('translate-y-4', 'opacity-0');
+                        item.classList.add('translate-y-0', 'opacity-100');
+                    });
+                }, 100);
+            } else {
+                // Animate menu items out first
+                menuItems.forEach(item => {
+                    item.classList.add('translate-y-4', 'opacity-0');
+                    item.classList.remove('translate-y-0', 'opacity-100');
+                });
+                
+                // Close menu after items animate out
+                setTimeout(() => {
+                    mobileMenu.classList.add('opacity-0', 'invisible');
+                    mobileMenu.classList.remove('opacity-100', 'visible');
+                    hamburgerIcon.classList.remove('active');
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                }, 200);
+            }
+        }
+
+        // Accordion functionality
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current accordion
+            content.classList.toggle('active');
+            if (content.classList.contains('active')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.fade-in, .scale-in');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+
+        // Enhanced hover effects for cards
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9713cc72a1ac2fe1',t:'MTc1NTU0NTE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
