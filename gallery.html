@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Luxe Bride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'peach': '#F4A261',
+                        'soft-peach': '#F8D7B3',
+                        'beige': '#F5F1EB',
+                        'warm-gray': '#6B7280',
+                        'muted-gold': '#CBA590',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Gallery Styles */
+        .gallery-item {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+        
+        .lightbox img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            color: #CBA590;
+        }
+        
+        /* Filter Styles */
+        .filter-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .filter-btn.active {
+            color: #CBA590;
+        }
+        
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background: #CBA590;
+            border-radius: 1px;
+        }
+        
+        /* Masonry Grid */
+        .masonry-grid {
+            column-count: 4;
+            column-gap: 1.5rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Scroll Animation Styles */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+        
+        .hero-text {
+            opacity: 0;
+            animation: heroFadeIn 1.5s ease-out 0.5s forwards;
+        }
+        
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Hamburger Animation Styles */
+        .hamburger-icon {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger-line {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #374151;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+            position: relative;
+        }
+        
+        .hamburger-line:nth-child(1) {
+            transform-origin: top left;
+        }
+        
+        .hamburger-line:nth-child(3) {
+            transform-origin: bottom left;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(0px, 0px);
+            width: 120%;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(0px, 0px);
+            width: 120%;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Header / Navigation -->
+    <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-22 h-12  rounded-lg overflow-hidden flex items-center justify-center">
+                    <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755599250/Group_38_yfjar2.svg" alt="Logo" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-700 hover:text-[#CBA590] transition-colors">Home</a>
+                <a href="#packages" class="text-gray-700 hover:text-[#CBA590] transition-colors">Services</a>
+                <a href="#" class="text-[#CBA590] font-medium">Gallery</a>
+                <a href="#CTA" target="_blank" class="border-2 bg-black text-white px-6 py-2 hover:bg-[#CBA590] transition-colors inline-block text-center">
+                    BOOK NOW
+                </a>
+
+            </div>
+            
+            <button id="hamburgerBtn" class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                <div class="hamburger-icon">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="fixed top-0 left-0 w-full h-screen bg-white z-40 opacity-0 invisible transition-all duration-700 ease-out md:hidden">
+            <!-- Close button at the very top -->
+            <button class="absolute top-6 right-6 text-gray-700 text-2xl z-50 w-10 h-10 flex items-center justify-center" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="pt-24 px-6 py-4 space-y-8">
+                <!-- Logo in mobile menu -->
+                <div class="absolute top-[16px] left-[25px]">
+                    <div class="w-34 h-12  rounded-lg overflow-hidden flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755596642/Group_38_plv0de.svg" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <div class="space-y-6 mt-8">
+                    <a href="#" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.2s;">Home</a>
+                    <a href="#packages" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.2s;">Services</a>
+                    <a href="#" class="block text-[#CBA590] font-medium text-right pr-2 text-2xl py-3 font-inter transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.2s;">Gallery</a>
+                </div>
+                
+                <div class="pt-8 px-4">
+                    <button class="w-full bg-black text-white px-6 py-4 hover:bg-[#CBA590] transition-all duration-300 text-center text-lg font-inter transform translate-y-4 opacity-0" style="transition-delay: 0s;">
+                        Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-b from-beige to-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto hero-text">
+                <h1 class="font-playfair text-5xl md:text-7xl font-bold mb-6 text-gray-800 leading-tight">
+                    Gallery
+                </h1>
+                <p class="font-inter text-xl md:text-2xl text-warm-gray mb-8 leading-relaxed">
+                    A glimpse of Luxe Bridal transformations
+                </p>
+                <div class="w-24 h-1 bg-muted-gold mx-auto rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Gallery Section -->
+    <section class="pb-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="masonry-grid" id="galleryGrid">
+                <!-- Gallery Item 1 -->
+                <div class="masonry-item gallery-item fade-in stagger-1" onclick="openLightbox('https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=600&h=800&fit=crop', 'Luxe Bride - Classic Elegance')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731207/Bride_2_hyvrvj.webp" alt="Bridal Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Luxe Bride</h3>
+                                <p class="font-inter text-sm opacity-90">Classic Elegance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="masonry-item gallery-item fade-in stagger-2" onclick="openLightbox('https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=900&fit=crop', 'Engagement Glow')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731208/Bride_3_fhva77.webp" alt="Engagement Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Engagement</h3>
+                                <p class="font-inter text-sm opacity-90">Radiant Glow</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="masonry-item gallery-item fade-in stagger-3" onclick="openLightbox('https://images.unsplash.com/photo-1583900985737-6d0495555783?w=600&h=750&fit=crop', 'Airbrush Perfection')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731208/Bride_4_vtrygx.webp" alt="Signature Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Signature Bride</h3>
+                                <p class="font-inter text-sm opacity-90">Airbrush Perfection</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="masonry-item gallery-item fade-in stagger-4" onclick="openLightbox('https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=600&h=850&fit=crop', 'Glamorous Evening')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731208/Bride_1_waunpl.webp" alt="Party Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Party Glam</h3>
+                                <p class="font-inter text-sm opacity-90">Glamorous Evening</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="masonry-item gallery-item fade-in stagger-6" onclick="openLightbox('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&h=850&fit=crop', 'Sophisticated Glam')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754742832/download_2_mqno9w.jpg" alt="Sophisticated Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Party Glam</h3>
+                                <p class="font-inter text-sm opacity-90">Sophisticated Style</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Gallery Item 6 -->
+                <div class="masonry-item gallery-item fade-in stagger-6" onclick="openLightbox('https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=600&h=900&fit=crop', 'Traditional Elegance')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731209/bride_cashja.webp" alt="Traditional Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Traditional Bride</h3>
+                                <p class="font-inter text-sm opacity-90">Cultural Beauty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 7 -->
+                <div class="masonry-item gallery-item fade-in stagger-1" onclick="openLightbox('https://images.unsplash.com/photo-1506629905607-45c8bb0b4e2d?w=600&h=750&fit=crop', 'Soft Romance')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731209/bride6_zq5vml.webp" alt="Romantic Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Engagement</h3>
+                                <p class="font-inter text-sm opacity-90">Soft Romance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 8 -->
+                <div class="masonry-item gallery-item fade-in stagger-2" onclick="openLightbox('https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600&h=850&fit=crop', 'Bold & Beautiful')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755714922/download_9_vnpvph.webp" alt="Bold Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Party Glam</h3>
+                                <p class="font-inter text-sm opacity-90">Bold & Beautiful</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 9 -->
+                <div class="masonry-item gallery-item fade-in stagger-3" onclick="openLightbox('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=800&fit=crop', 'Timeless Beauty')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755714922/download_8_yizf2b.webp" alt="Timeless Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Classic Bride</h3>
+                                <p class="font-inter text-sm opacity-90">Timeless Beauty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 10 -->
+                <div class="masonry-item gallery-item fade-in stagger-4" onclick="openLightbox('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=900&fit=crop', 'Artistic Expression')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755714922/bride_ysuskw.webp" alt="Artistic Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Editorial</h3>
+                                <p class="font-inter text-sm opacity-90">Artistic Expression</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 11 -->
+                <div class="masonry-item gallery-item fade-in stagger-5" onclick="openLightbox('https://images.unsplash.com/photo-1493666438817-866a91353ca9?w=600&h=750&fit=crop', 'Natural Glow')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755715110/download_8_kvxwgy.webp" alt="Natural Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Engagement</h3>
+                                <p class="font-inter text-sm opacity-90">Natural Glow</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 11 -->
+                <div class="masonry-item gallery-item fade-in stagger-5" onclick="openLightbox('https://images.unsplash.com/photo-1493666438817-866a91353ca9?w=600&h=750&fit=crop', 'Natural Glow')">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755715100/download_7_dnhx8q.webp" alt="Natural Look" class="w-full h-auto object-cover">
+                        <div class="gallery-overlay absolute inset-0 flex items-end p-6">
+                            <div class="text-white">
+                                <h3 class="font-playfair text-lg font-semibold mb-1">Engagement</h3>
+                                <p class="font-inter text-sm opacity-90">Natural Glow</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <img id="lightboxImage" src="" alt="">
+            <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 id="lightboxTitle" class="font-playfair text-white text-xl font-semibold mb-2"></h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-black mb-6 fade-in">
+                    Love what you see?
+                </h2>
+                <p class="font-inter text-gray-500 text-lg mb-8 opacity-90 fade-in stagger-1">
+                    Book your Luxe Bridal experience today and let us create magic for your special day.
+                </p>
+                <div class="fade-in stagger-2">
+                    <button class="bg-[#CBA590] text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-[#f5dacb] transition-colors shadow-lg">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        Book Your Session
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="fade-in stagger-1">
+                    <div class="flex items-center mb-6">
+                        <div class="w-22 h-12 b rounded-lg overflow-hidden flex items-center justify-center floating">
+                            <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754732231/luxe_bride_logo_ojdgme.svg"" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <p class="font-inter text-gray-300 leading-relaxed">
+                        Creating timeless beauty for your most precious moments.
+                    </p>
+                </div>
+                
+                <div class="fade-in stagger-2">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Quick Links</h3>
+                    <div class="space-y-3">
+                        <a href="#" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Home</a>
+                        <a href="#packages" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Services</a>
+                        <a href="#" class="block text-gray-300 hover:text-[#CBA590] transition-colors">Gallery</a>
+                        
+                    </div>
+                </div>
+                
+                <div class="fade-in stagger-3">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Contact Details</h3>
+                    <div class="space-y-3">
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-phone mr-3 text-white"></i>
+                            +91 XXXXXXX
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-envelope mr-3 text-white"></i>
+                            luxebride2025@.com
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-map-marker-alt mr-3 text-white"></i>
+                            Mavelikar, Kerala, India
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center fade-in stagger-4">
+                <p class="font-inter text-gray-300">© 2025 Luxe Bride. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky navbar functionality
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('sticky-nav');
+            } else {
+                navbar.classList.remove('sticky-nav');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+            const menuItems = mobileMenu.querySelectorAll('a, button');
+            
+            if (mobileMenu.classList.contains('opacity-0')) {
+                // Open menu
+                mobileMenu.classList.remove('opacity-0', 'invisible');
+                mobileMenu.classList.add('opacity-100', 'visible');
+                hamburgerIcon.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Animate menu items in
+                setTimeout(() => {
+                    menuItems.forEach(item => {
+                        item.classList.remove('translate-y-4', 'opacity-0');
+                        item.classList.add('translate-y-0', 'opacity-100');
+                    });
+                }, 100);
+            } else {
+                // Animate menu items out first
+                menuItems.forEach(item => {
+                    item.classList.add('translate-y-4', 'opacity-0');
+                    item.classList.remove('translate-y-0', 'opacity-100');
+                });
+                
+                // Close menu after items animate out
+                setTimeout(() => {
+                    mobileMenu.classList.add('opacity-0', 'invisible');
+                    mobileMenu.classList.remove('opacity-100', 'visible');
+                    hamburgerIcon.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }, 200);
+            }
+        }
+
+
+
+        // Lightbox Functionality
+        function openLightbox(imageSrc, title) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            
+            lightboxImage.src = imageSrc;
+            lightboxTitle.textContent = title;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.fade-in');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+
+        
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9713e057c3e31191',t:'MTc1NTU0NTk1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
