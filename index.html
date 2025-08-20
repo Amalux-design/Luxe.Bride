@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Bride - Professional Brial Makeup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'peach': '#F4A261',
+                        'soft-peach': '#F8D7B3',
+                        'beige': '#F5F1EB',
+                        'warm-gray': '#6B7280',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-allura {
+            font-family: 'Allura', cursive;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23F5F1EB" width="1200" height="800"/><circle fill="%23F4A261" opacity="0.1" cx="300" cy="200" r="150"/><circle fill="%23F8D7B3" opacity="0.2" cx="900" cy="600" r="200"/><text x="600" y="400" text-anchor="middle" fill="%23666" font-size="24" font-family="serif">Elegant Bridal Makeup</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .popular-badge {
+            background: linear-gradient(135deg, #CBA590, #F4A261);
+        }
+
+        /* Scroll Animation Styles */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+        
+        .parallax-element {
+            transition: transform 0.1s ease-out;
+        }
+        
+        .static-image {
+            /* Remove any transform effects for static images */
+            transform: none !important;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hero-text {
+            opacity: 0;
+            animation: heroFadeIn 1.5s ease-out 0.5s forwards;
+        }
+        
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-image {
+            opacity: 0;
+            animation: heroImageSlide 1.2s ease-out 0.8s forwards;
+        }
+        
+        @keyframes heroImageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* 🔥 New Hamburger Animation Styles */
+        .hamburger-icon {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger-line {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #374151;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+            position: relative;
+        }
+        
+        .hamburger-line:nth-child(1) { transform-origin: top left; }
+        .hamburger-line:nth-child(3) { transform-origin: bottom left; }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(0px, 0px);
+            width: 120%;
+        }
+        .hamburger-icon.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger-icon.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(0px, 0px);
+            width: 120%;
+        }
+
+        /* 🔥 Navbar Link Colors */
+        #navbar a {
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        /* Home link stays highlighted */
+        #navbar a.active {
+            color: #CBA590 !important;
+        }
+
+        /* When navbar is sticky (white bg), switch link colors */
+        .sticky-nav a {
+            color: black;
+        }
+
+        /* Keep Home highlighted on sticky as well */
+        .sticky-nav a.active {
+            color: #CBA590 !important;
+        }
+
+        #mobileMenu a {
+  color: #000 !important;
+}
+</style>
+
+</head>
+<body class="bg-black">
+    <!-- Header / Navigation -->
+    <!-- Header / Navigation -->
+<!-- Header / Navigation -->
+<nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 py-4">
+  <div class="container mx-auto px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <div class="w-22 h-12 rounded-lg overflow-hidden flex items-center justify-center">
+        <!-- Dark + Light logo swap (if you added it before) -->
+        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754732231/luxe_bride_logo_ojdgme.svg" alt="Logo Dark" class="logo-dark w-full h-full object-cover">
+        <img src="logo-light.svg" alt="Logo Light" class="logo-light w-full h-full object-cover hidden">
+      </div>
+    </div>
+
+    <!-- Navigation Links (Desktop) -->
+    <div class="hidden md:flex items-center space-x-8">
+      <a href="#" class="active">Home</a>
+      <a href="#packages">Services</a>
+      <a href="#gallery">Gallery</a>
+
+      <button onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })" class="border-2 bg-black text-white px-6 py-2 hover:bg-[#CBA590] transition-colors">
+    BOOK NOW
+</button>
+
+
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button id="hamburgerBtn" class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+      <div class="hamburger-icon">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed top-0 left-0 w-full h-screen bg-white z-40 opacity-0 invisible transition-all duration-700 ease-out md:hidden">
+    <button class="absolute top-6 right-6 text-gray-700 text-2xl z-50 w-10 h-10 flex items-center justify-center" onclick="toggleMobileMenu()">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <div class="pt-24 px-6 py-4 space-y-8">
+      <div class="absolute top-[16px] left-[25px]">
+        <div class="w-34 h-12 rounded-lg overflow-hidden flex items-center justify-center">
+          <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755596642/Group_38_plv0de.svg" alt="Logo" class="w-full h-full object-cover">
+        </div>
+      </div>
+
+      <div class="space-y-6 mt-8">
+        <a href="#" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-bold transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.1s;">Home</a>
+        <a href="#packages" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.2s;">Services</a>
+        <a href="#gallery" class="block text-gray-700 hover:text-[#CBA590] text-right pr-2 text-2xl py-3 font-inter font-light transition-all duration-300 transform translate-y-4 opacity-0" style="transition-delay: 0.3s;">Gallery</a>
+    
+      </div>
+
+      <div class="pt-8 px-4">
+  <button onclick="
+      // Scroll to contact section
+      const section = document.getElementById('contact');
+      if(section) section.scrollIntoView({ behavior: 'smooth' });
+      
+      // Properly close the hamburger menu and reset toggle animation
+      toggleMobileMenu();
+    " class="w-full bg-black text-white px-6 py-4 hover:bg-[#CBA590] transition-all duration-300 text-center text-lg font-inter transform translate-y-4 opacity-0" style="transition-delay: 0s;">
+    Book Appointment
+  </button>
+</div>
+
+
+</div>
+
+
+    </div>
+  </div>
+</nav>
+
+    <!-- Hero Section -->
+<section class="bg-black pt-20 pb-16">
+  <div class="container mx-auto px-6">
+    <div class="grid md:grid-cols-12 items-center gap-8">
+
+      <!-- Image Column -->
+      <div class="order-1 md:order-2 md:col-span-7 flex justify-center md:justify-end">
+        <div class="w-full md:w-[90%] lg:w-[80%] rounded-2xl overflow-hidden shadow-2xl">
+          <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731209/Hero_omyjbr.webp" 
+               alt="Bridal Makeup Hero"
+               class="w-full h-auto max-h-[400px] sm:max-h-[500px] object-cover md:object-contain mx-auto">
+        </div>
+      </div>
+
+      <!-- Text Column -->
+      <div class="order-2 md:order-1 md:col-span-5 z-10 relative text-center md:text-left flex flex-col items-center md:items-start">
+        <h1 class="font-playfair font-semibold text-[28px] md:text-[40px] mb-6 leading-tight text-[#A6A6A6]">
+          Minimal. Meaningful.<br>Made for you.
+        </h1>
+        <p class="font-inter text-[16px] md:text-[20px] mb-8 text-[#737373]">
+          Focusing on one bride at a time.
+        </p>
+
+        <button onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })" class="bg-white text-black px-4 py-[10px] text-[12px] md:text-[14px] hover:bg-[#CBA590] transition-colors shadow-lg">
+            BOOK AN APPOINTMENT
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+    <!-- Speciality Section -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      
+      <!-- Image -->
+      <div class="fade-in flex justify-center">
+        <div class="rounded-2xl overflow-hidden w-full max-w-[368px] aspect-[736/1045]">
+          <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754742832/download_2_mqno9w.jpg" 
+               alt="Bridal Beauty Services" 
+               class="w-full h-full object-cover">
+        </div>
+      </div>
+      
+      <!-- Text -->
+      <div class="fade-in">
+        <h2 class="font-playfair text-4xl font-bold text-gray-800 mb-6">Our Speciality</h2>
+        <p class="font-inter text-warm-gray text-lg mb-8 leading-relaxed">
+          We specialize in creating timeless bridal looks that enhance your natural beauty. 
+         <I><b>We focus on bringing the best in you. Not changing you.</b></I>
+        </p>
+        
+        <div class="space-y-6">
+          <div class="fade-in stagger-1">
+            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Soft Elegance to Bold Glam</h3>
+            <p class="font-inter text-warm-gray">From subtle, natural looks to dramatic evening glamour, we adapt to your vision.</p>
+          </div>
+          
+          <div class="fade-in stagger-2">
+            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Premium & Skin Loving Products</h3>
+            <p class="font-inter text-warm-gray">Only the finest, skin-friendly cosmetics that photograph beautifully and last all day.</p>
+          </div>
+          
+          <div class="fade-in stagger-3">
+            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Customizable for You</h3>
+            <p class="font-inter text-warm-gray">Every look is tailored to your skin tone, features, and personal style preferences.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+    <!-- Appointment CTA Block -->
+<section class="py-16 bg-[#CBA590]">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="font-playfair text-3xl font-bold text-white mb-4 fade-in">
+      Want to make booking or have a question?
+    </h2>
+    <p class="font-inter text-white text-lg mb-8 fade-in stagger-1">
+      Call us or simply book online.
+    </p>
+    <a href="#contact" class="text-white px-8 py-4 text-lg font-medium 
+             bg-transparent
+             hover:text-black
+             transition-colors ease-out duration-150 hover:duration-100 inline-block text-center">
+    BOOK APPOINTMENT
+</a>
+
+  </div>
+</section>
+
+
+
+    <!-- Offerings Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="font-playfair text-4xl font-bold text-center text-gray-800 mb-16 fade-in">Luxe Bride Offers</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg scale-in stagger-1">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mx-auto mb-6 floating">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755525117/geometric-flower_e5var3.png" alt="Makeup Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Bridal & Party Makeup</h3>
+                    <p class="font-inter text-warm-gray leading-relaxed">
+                        Professional techniques and premium products create a flawless luxury look that photographs beautifully and lasts throughout your celebration.
+                    </p>
+                </div>
+                
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg scale-in stagger-2">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mx-auto mb-6 floating" style="animation-delay: 2s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755525117/geometric-flower_e5var3.png" alt="Hair & Eye Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Hair & Eye Makeover</h3>
+                    <p class="font-inter text-warm-gray leading-relaxed">
+                        Gorgeous hairstyles and stunning eye makeup designed for any occasion, from intimate ceremonies to grand celebrations.
+                    </p>
+                </div>
+                
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg scale-in stagger-3">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mx-auto mb-6 floating" style="animation-delay: 4s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755525117/geometric-flower_e5var3.png" alt="Saree Draping Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-2xl font-semibold text-gray-800 mb-4">Saree Draping</h3>
+                    <p class="font-inter text-warm-gray leading-relaxed">
+                        Traditional saree draping with modern finesse, ensuring you look elegant and feel comfortable throughout your special day.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+<section class="py-20 bg-beige">
+  <div class="container mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      
+      <!-- Image -->
+      <div class="static-image">
+        <div class="rounded-2xl overflow-hidden">
+          <img 
+            src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754731192/maluhero1_pnmn9v.png" 
+            alt="Aparna Prakash Portrait" 
+            class="w-full h-auto object-contain"
+          >
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="p-8">
+        <h2 class="font-playfair text-2xl font-light text-gray-800 mb-6 fade-in">
+          The Personality<br>
+          <span class="font-allura text-[#CBA590] text-6xl">Aparna Prakash</span>
+        </h2>
+        <div class="space-y-4">
+          <p class="font-inter text-warm-gray text-lg leading-relaxed fade-in stagger-1">
+            Aparna is a passionate bridal makeup artist who specializes in premium, customized bridal looks.
+          </p>
+          <p class="font-inter text-warm-gray text-lg leading-relaxed fade-in stagger-2">
+            She brings years of expertise and works closely with each bride to create timeless elegance.
+          </p>
+          <p class="font-inter text-warm-gray text-lg leading-relaxed fade-in stagger-3">
+            Her attention to detail and commitment to using only the finest products ensures that every bride feels confident and radiant on their most important day.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <!-- Highlights Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="font-playfair text-4xl font-bold text-center text-gray-800 mb-16 fade-in">Highlights</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12  overflow-hidden mx-auto mb-4 floating">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755525924/Frame_48_v3hd6g.png" alt="Quality Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">High-Quality Products</h3>
+                    <p class="font-inter text-warm-gray text-sm">Premium cosmetics for lasting beauty</p>
+                </div>
+                
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12  overflow-hidden mx-auto mb-4 floating" style="animation-delay: 1s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754808108/stones-1_deoreo.png" alt="Personalized Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Personalized Service</h3>
+                    <p class="font-inter text-warm-gray text-sm">Tailored to your unique style</p>
+                </div>
+                
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12 overflow-hidden mx-auto mb-4 floating" style="animation-delay: 2s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754808108/eyebrow_qsz8wk.png" alt="Expertise Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Professional Expertise</h3>
+                    <p class="font-inter text-warm-gray text-sm">Backed up with skill and confidence  </p>
+                </div>
+                
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12 overflow-hidden mx-auto mb-4 floating" style="animation-delay: 3s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754808318/wave_woe7q0.png" alt="Friendly Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Relaxing and Friendly</h3>
+                    <p class="font-inter text-warm-gray text-sm">Comfortable and Stress-free</p>
+                </div>
+                
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12 overflow-hidden mx-auto mb-4 floating" style="animation-delay: 4s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754808370/facial-massage_lpxezw.png" alt="Makeover Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Complete Makeover</h3>
+                    <p class="font-inter text-warm-gray text-sm">From Hair tip to Toe Nail</p>
+                </div>
+                
+                <div class="text-center card-hover bg-beige rounded-2xl p-6 fade-in stagger-1">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mx-auto mb-4 floating" style="animation-delay: 5s;">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754808418/tag_krywwh.png" alt="Pricing Icon" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-playfair text-lg font-semibold text-gray-800 mb-2">Reasonable Pricing</h3>
+                    <p class="font-inter text-warm-gray text-sm">Luxury services at fair rates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="py-20 bg-beige">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto">
+                <i class="fas fa-quote-left text-black text-4xl mb-8 scale-in"></i>
+                <blockquote class="font-playfair text-2xl md:text-3xl font-light text-gray-800 mb-8 leading-relaxed fade-in stagger-1">
+                    "Aparna is both professional and friendly. She made me feel so comfortable and gave me the perfect look for my wedding day. Truly magical!"
+                </blockquote>
+                <p class="font-inter text-warm-gray text-lg fade-in stagger-2">– Athira Muraleedharan</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Me Section -->
+<section id="contact" 
+         class="relative py-16 bg-cover bg-center" 
+         style="background-image: url('https://res.cloudinary.com/dgxb8m8lr/image/upload/v1755713050/pexels-iriser-916340_y0lkbs.webp');">
+  
+  <!-- Overlay for readability -->
+<div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+<div class="relative container mx-auto px-6">
+  <div class="max-w-3xl mx-auto text-center mb-12 fade-in">
+    <h2 class="text-3xl md:text-4xl font-playfair font-bold text-white mb-4">Contact Me</h2>
+    <p class="text-gray-200">I'd love to hear from you. Send me a message and I’ll get back to you soon.</p>
+  </div>
+
+  <form class="max-w-2xl mx-auto p-8 rounded-2xl shadow-lg space-y-6 fade-in scale-in 
+               bg-white/10 backdrop-blur-md">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-left text-white mb-2">Name</label>
+      <input type="text" id="name" name="name"
+             class="w-full bg-transparent border border-white text-white placeholder-gray-300 
+                    rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#CBA590]"
+             placeholder="Enter your name"
+             required>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-left text-white mb-2">Email</label>
+      <input type="email" id="email" name="email"
+             class="w-full bg-transparent border border-white text-white placeholder-gray-300 
+                    rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#CBA590]"
+             placeholder="Enter your email"
+             required>
+    </div>
+
+    <!-- Message -->
+    <div>
+      <label for="message" class="block text-left text-white mb-2">Message</label>
+      <textarea id="message" name="message" rows="5"
+                class="w-full bg-transparent border border-white text-white placeholder-gray-300 
+                       rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#CBA590]"
+                placeholder="Type your message..."
+                required></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit"
+              class="w-full bg-white text-b font-medium px-6 py-3 rounded-lg 
+                     hover:bg-[#CBA590] transition-all duration-300">
+        Send Message
+      </button>
+    </div>
+    <!-- Call Now -->
+  <div>
+    <a href="tel:+911234567890"
+       class="w-full block text-center bg-[#CBA590] text-white font-medium px-6 py-3 rounded-lg 
+              hover:bg-black transition-all duration-300">
+       Call Now
+    </a>
+  </div>
+  </form>
+</div>
+</section>
+
+
+<!-- EmailJS Script -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
+  })();
+
+  // Form submit handler
+  document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+      .then(function() {
+        alert("Message sent successfully! 🎉");
+      }, function(error) {
+        alert("Failed to send message 😞 " + JSON.stringify(error));
+      });
+  });
+</script>
+    <!-- Footer -->
+    <footer id="contact" class="bg-black text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="fade-in stagger-1">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-24 h-12 overflow-hidden floating">
+                        <img src="https://res.cloudinary.com/dgxb8m8lr/image/upload/v1754732231/luxe_bride_logo_ojdgme.svg" 
+                            alt="The Bride Logo" 
+                            class="w-full h-full object-contain">
+                        </div>
+                    </div>
+                    <p class="font-inter text-gray-300 leading-relaxed">
+                        Creating timeless beauty for your most precious moments.
+                    </p>
+                    </div>
+
+                
+                <div class="fade-in stagger-2">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Quick Links</h3>
+                    <div class="space-y-3">
+                        <a href="#packages" class="block text-gray-300 hover:text-peach transition-colors">Services</a>
+                        <a href="#gallery" class="block text-gray-300 hover:text-peach transition-colors">Gallery</a>
+                    </div>
+                </div>
+                
+                <div class="fade-in stagger-3">
+                    <h3 class="font-playfair text-xl font-semibold mb-6">Contact Details</h3>
+                    <div class="space-y-3">
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-phone mr-3 text-white"></i>
+                            +91 XXXXXXX
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-envelope mr-3 text-white"></i>
+                            luxebride2025@.com
+                        </p>
+                        <p class="font-inter text-gray-300">
+                            <i class="fas fa-map-marker-alt mr-3 text-white"></i>
+                            Mavelikara, Kerala, India
+                        </p>
+                    </div>
+                    
+                    <style>
+  .social-icon {
+    fill: white; /* default white */
+    transition: fill 0.3s ease;
+  }
+  .social-icon:hover {
+    fill: #CBA590; /* hover color */
+  }
+</style>
+
+<div class="flex space-x-4 mt-6">
+  <a href="#" class="w-8 h-8 scale-in stagger-4">
+    <!-- Inline SVG instead of <img> -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-full h-full social-icon">
+      <path d="M16.98 2H7.02C4.25 2 2 4.25 2 7.02v9.96C2 19.75 4.25 22 7.02 22h9.96C19.75 22 22 19.75 22 16.98V7.02C22 4.25 19.75 2 16.98 2zM20 16.98c0 1.66-1.36 3.02-3.02 3.02H7.02C5.36 20 4 18.64 4 16.98V7.02C4 5.36 5.36 4 7.02 4h9.96C18.64 4 20 5.36 20 7.02v9.96z"/>
+<path d="M12 7.5A4.5 4.5 0 1 0 12 16.5 4.5 4.5 0 1 0 12 7.5zM12 14.5A2.5 2.5 0 1 1 12 9.5a2.5 2.5 0 0 1 0 5z"/>
+<circle cx="16.5" cy="7.5" r="1.2"/>
+    </svg>
+  </a>
+
+  <a href="#" class="w-8 h-8 scale-in stagger-5">
+    <!-- Replace with Facebook SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-full h-full social-icon">
+      <path d="M22 12a10 10 0 1 0-11.5 9.9v-7H8v-3h2.5V9.5c0-2.5 1.5-3.9 3.7-3.9 1 0 2 .2 2 .2v2.3h-1.1c-1.1 0-1.4.7-1.4 1.4V12h2.7l-.4 3h-2.3v7A10 10 0 0 0 22 12z"/>
+    </svg>
+  </a>
+
+  <a href="#" class="w-8 h-8 scale-in stagger-6">
+    <!-- Replace with WhatsApp SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-full h-full social-icon">
+      <path d="M20 4.5A9.8 9.8 0 0 0 12 2a9.9 9.9 0 0 0-8.6 14.9L2 22l5.3-1.4A9.9 9.9 0 0 0 12 22a10 10 0 0 0 10-10c0-2.6-1-5.2-2.9-7.1zM12 20a8 8 0 0 1-4.1-1.2l-.3-.2-3.2.9.9-3.1-.2-.3A8 8 0 1 1 12 20zm4.5-6.2c-.2-.1-1.2-.6-1.4-.7s-.3-.1-.5.1-.6.7-.7.8-.3.2-.5.1a6.5 6.5 0 0 1-2-1.2 7.5 7.5 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5s.2-.3.3-.5.1-.3.2-.5 0-.4 0-.5 0-.3-.1-.4-.5-1.2-.7-1.6c-.2-.4-.4-.3-.5-.3h-.4c-.2 0-.5.1-.7.3s-.9.9-.9 2.2.9 2.6 1 2.7.2.4.4.6c.2.3 1.8 2.7 4.3 3.7.6.3 1.1.5 1.5.6.6.2 1.1.2 1.5.1.5-.1 1.2-.5 1.3-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/>
+    </svg>
+  </a>
+</div>
+
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center fade-in stagger-4">
+                <p class="font-inter text-gray-300">© 2025 Luxe Bride. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky navbar functionality
+        // Sticky navbar functionality + nav link color change
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const links = document.querySelectorAll('#navbar a');
+        
+        if (window.scrollY > 100) {
+            navbar.classList.add('sticky-nav');
+
+            // Change link colors for sticky state
+            links.forEach(link => {
+                if (link.textContent.trim() === "Home") {
+                    link.style.color = "#CBA590"; // Home stays gold
+                } else {
+                    link.style.color = "#000000"; // Others turn black
+                }
+            });
+
+        } else {
+            navbar.classList.remove('sticky-nav');
+
+            // Reset link colors for default (black navbar)
+            links.forEach(link => {
+                if (link.textContent.trim() === "Home") {
+                    link.style.color = "#CBA590"; // Home stays gold
+                } else {
+                    link.style.color = "#ffffff"; // Others white
+                }
+            });
+        }
+    });
+
+    // 🔥 New Mobile menu toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const hamburgerIcon = document.querySelector('.hamburger-icon');
+        const menuItems = mobileMenu.querySelectorAll('a, button');
+        
+        if (mobileMenu.classList.contains('opacity-0')) {
+            mobileMenu.classList.remove('opacity-0', 'invisible');
+            mobileMenu.classList.add('opacity-100', 'visible');
+            hamburgerIcon.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                menuItems.forEach(item => {
+                    item.classList.remove('translate-y-4', 'opacity-0');
+                    item.classList.add('translate-y-0', 'opacity-100');
+                });
+            }, 100);
+        } else {
+            menuItems.forEach(item => {
+                item.classList.add('translate-y-4', 'opacity-0');
+                item.classList.remove('translate-y-0', 'opacity-100');
+            });
+            
+            setTimeout(() => {
+                mobileMenu.classList.add('opacity-0', 'invisible');
+                mobileMenu.classList.remove('opacity-100', 'visible');
+                hamburgerIcon.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+    }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    
+
+    // Scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.addEventListener('DOMContentLoaded', function() {
+        const animatedElements = document.querySelectorAll('.fade-in, .slide-left, .slide-right, .scale-in');
+        animatedElements.forEach(el => observer.observe(el));
+    });
+
+    // Parallax effect for images (excluding static images)
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.parallax-element:not(.static-image)');
+        
+        parallaxElements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const elementTop = rect.top + scrolled;
+            const elementHeight = rect.height;
+            const windowHeight = window.innerHeight;
+            
+            // Only apply parallax when element is in viewport
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                const speed = 0.5;
+                const yPos = -(scrolled - elementTop) * speed;
+                element.style.transform = `translateY(${yPos}px)`;
+            }
+        });
+    });
+
+    // Enhanced hover effects for cards
+    document.querySelectorAll('.card-hover').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97107bb2b0da2fe5',t:'MTc1NTUxMDM3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
